@@ -1,20 +1,35 @@
+import os
 import cherrypy
-from stardog.endpoints.query_frontend import QueryEndpoint
+from cherrypy.lib.static import serve_file
 from stardog.endpoints.execute_query import ExecuteQueryEndpoint
 from stardog.endpoints.new_document import NewDocumentEndpoint
+from jinja2 import Environment, PackageLoader, select_autoescape
 
+env = Environment(
+    loader=PackageLoader('stardog.endpoints', 'resources'),
+    autoescape=select_autoescape(['html', 'xml'])
+)
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 class StardogServer:
-    pass
+    @cherrypy.expose
+    def query(self, name):
+        if name == 'index.html':
+            template = env.get_template(name)
+            return template.render({'pods': [{'name': 'Pod1'}, {'name': 'Pod2'}, {'name': 'Pod3'}]})
+        if name.endswith('css'):
+            return serve_file(os.path.join(CURRENT_DIR, 'stardog', 'endpoints', 'resources', name), content_type='text/css')
+        if name.endswith('js'):
+            return serve_file(os.path.join(CURRENT_DIR, 'stardog', 'endpoints', 'resources', name), content_type='text/javascript')
+        if name.endswith('svg'):
+            return serve_file(os.path.join(CURRENT_DIR, 'stardog', 'endpoints', 'resources', name), content_type='image/svg+xml')
+
+        raise cherrypy.HTTPError(404, message="Resource Not Found")
 
 class Api:
     pass
 
 CHERRY_TREE_CONFIG = {
-    '/query': {
-        'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
-        'tools.response_headers.on': True,
-        'tools.response_headers.headers': [('Content-Type', 'text/html')],
-    },
     '/api/executeQuery': {
         'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
         'tools.response_headers.on': True,
@@ -33,11 +48,10 @@ def setup_cherry_tree(port=8080):
     cherrypy.config.update({
         'server.socket_port': port,
         'environment': 'production',
-        'log.screen': False,
-        'show_tracebacks': False,
+        'log.screen': True,
+        'show_tracebacks': True,
     })
     service = StardogServer()
-    service.query = QueryEndpoint()
     service.api = Api()
     service.api.executeQuery = ExecuteQueryEndpoint()
     service.api.newDocument = NewDocumentEndpoint()

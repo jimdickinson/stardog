@@ -1,0 +1,16 @@
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<html>
+    <body>
+        <img class="header-img" src="datastax_logo.svg" />
+        <div class="main-view">
+            <h3>StarDog Explorer</h3> 
+            {% for pod in pods %}
+            <a class="panel" href="/query/{{pod.name}}">
+                {{ pod.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </body>
+</html>
