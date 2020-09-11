@@ -1,0 +1,17 @@
+<head>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script type="text/javascript" src="item_explorer.js"></script>
+</head>
+<html>
+    <body>
+        <img class="header-img" src="/static/datastax_logo.svg" />
+        <div class="item-explorer-header">
+            <h3>{{ name }}</h3> 
+            <span>
+                <input class="search-input" id="searchInput" type="text" placeholder="Search something..."/>
+                <button class="submit-button" type="submit" onclick="executeSearch()">Search</button>
+            </span>
+        </div>
+        <div id="searchResult"></div>
+    </body>
+</html>

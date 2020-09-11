@@ -13,18 +13,26 @@ env = Environment(
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 class StardogServer:
     @cherrypy.expose
+    def static(self, name):
+        if name.endswith('css'):
+            return serve_file(os.path.join(CURRENT_DIR, 'stardog', 'endpoints', 'resources', 'static', name), content_type='text/css')
+        if name.endswith('svg'):
+            return serve_file(os.path.join(CURRENT_DIR, 'stardog', 'endpoints', 'resources', 'static', name), content_type='image/svg+xml')
+
+    @cherrypy.expose
     def query(self, name):
         if name == 'index.html':
             template = env.get_template(name)
             return template.render({'pods': [{'name': 'Pod1'}, {'name': 'Pod2'}, {'name': 'Pod3'}]})
-        if name.endswith('css'):
-            return serve_file(os.path.join(CURRENT_DIR, 'stardog', 'endpoints', 'resources', name), content_type='text/css')
-        if name.endswith('js'):
-            return serve_file(os.path.join(CURRENT_DIR, 'stardog', 'endpoints', 'resources', name), content_type='text/javascript')
-        if name.endswith('svg'):
-            return serve_file(os.path.join(CURRENT_DIR, 'stardog', 'endpoints', 'resources', name), content_type='image/svg+xml')
 
         raise cherrypy.HTTPError(404, message="Resource Not Found")
+
+    @cherrypy.expose
+    def item(self, name):
+        if name.endswith('js'):
+            return serve_file(os.path.join(CURRENT_DIR, 'stardog', 'endpoints', 'resources', name), content_type='text/javascript')
+        template = env.get_template('item_explorer.html')
+        return template.render({'name': name})
 
 class Api:
     pass
