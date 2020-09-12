@@ -85,7 +85,11 @@ class Proxy:
         )
         apiuri = apiuri_parsed.geturl()
 
-        content = cherrypy.request.body.read()
+        content = None
+        try:
+            content = cherrypy.request.body.read()
+        except Exception as e:
+            pass
 
         api_request_headers = {}
         for (header, header_value) in cherrypy.request.header_list:
