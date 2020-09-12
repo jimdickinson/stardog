@@ -21,11 +21,14 @@ function executeSearch() {
 
     xhr.onload = function() {
         document.getElementById("searchResult").innerText = (xhr.status > 399 ? 'Error: ' : '') + xhr.response;
+        if (xhr.status == 204) {
+            document.getElementById("searchResult").innerText = "No Results";
+        }
     };
     
     xhr.onerror = function() {
         document.getElementById("searchResult").innerText = 'Unspecified Network Error';
     };
 
-    xhr.send()
+    xhr.send(null);
 }
