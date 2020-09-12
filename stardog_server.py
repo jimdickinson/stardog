@@ -5,12 +5,10 @@ import uuid
 import json
 from urllib.parse import urlparse
 from cherrypy.lib.static import serve_file
-from stardog.endpoints.execute_query import ExecuteQueryEndpoint
-from stardog.endpoints.new_document import NewDocumentEndpoint
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 # Environment variables to connect to Astra
-ASTRA_BASE_URL_ENV = "BASE_URL" # e.g. https://b6f50ebd-a56d-4e37-ab11-c776afb99fd4-us-east1.apps.astra.datastax.com/
+ASTRA_BASE_URL_ENV = "BASE_URL" # e.g. https://asdfasdfadsf-us-east1.apps.astra.datastax.com/
 ASTRA_USERNAME = "ASTRA_USERNAME"
 ASTRA_PASSWORD = "ASTRA_PASSWORD"
 
@@ -121,16 +119,6 @@ class Proxy:
 
 
 CHERRY_TREE_CONFIG = {
-    '/api/executeQuery': {
-        'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
-        'tools.response_headers.on': True,
-        'tools.response_headers.headers': [('Content-Type', 'application/json')],
-    },
-    '/api/newDocument': {
-        'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
-        'tools.response_headers.on': True,
-        'tools.response_headers.headers': [('Content-Type', 'application/json')],
-    }
 }
 
 def setup_cherry_tree(port=8080):
