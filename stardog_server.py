@@ -30,7 +30,7 @@ class StardogServer:
     def query(self, name):
         if name == 'index.html':
             template = env.get_template(name)
-            return template.render({'pods': [{'name': 'Pod1'}, {'name': 'Pod2'}, {'name': 'Pod3'}]})
+            return template.render({'pods': [{'name': 'pods'}, {'name': 'namespaces'}, {'name': 'deployments'}]})
 
         raise cherrypy.HTTPError(404, message="Resource Not Found")
 
@@ -116,7 +116,7 @@ class Proxy:
         cherrypy.response.status = api_resp.status_code
         
         for (header, header_value) in api_resp.headers.items():
-            if not ( header.lower() in ('content-length', 'server') ):
+            if not ( header.lower() in ('content-length', 'server', 'content-encoding') ):
                 cherrypy.response.headers[header] = header_value
 
         return api_resp.content

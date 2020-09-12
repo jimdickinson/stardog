@@ -32,7 +32,8 @@ body {
 }
 
 .search-input {
-    height: 25px;
+    height: 30px;
+    width: 400px;
     font-size: 20px;
     background-color: #f5f5f5;
     border: 1px solid gray;

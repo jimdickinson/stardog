@@ -46,7 +46,7 @@ def process(stardog_data_dir, astra_proxy_url):
             for (ctx, namespace, data) in loader_process(os.path.join(stardog_data_dir, directory), kind):
                 success = delete_then_put(sub_bad_chars(data), ctx, namespace, kind, astra_proxy_url)
                 if not success:
-                    fails.append((ctx, namespace, kind, item['metadata']['name']))
+                    fails.append((ctx, namespace, kind, data['metadata']['name']))
     print(f"The following {len(fails)} items failed: {fails}")
 
 if __name__ == '__main__':
