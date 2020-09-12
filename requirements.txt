@@ -14,3 +14,4 @@ tempora==4.0.0
 zc.lockfile==2.0
 fire
 requests==2.7.0
+fire
