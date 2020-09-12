@@ -3,6 +3,10 @@ import json
 import os
 
 def handle_data(*dirs):
+    """
+    handle_data takes a varargs list of directories and loops through it printing a
+    summary of the k8s resources
+    """
     for d in dirs:
         for kubecontext, ns, pod in process(d, "pods"):
             print(kubecontext, ns, pod["metadata"]["name"])
@@ -15,6 +19,10 @@ def handle_data(*dirs):
 
 
 def process(thedir, kind):
+    """
+    process takes a directory on disk, and a k8s kind, and makes a generator to emit
+    tuples that have the kubecontext, namespace, and k8s resource
+    """
     kubecontext = os.path.basename(os.path.normpath(thedir))
     print(kubecontext)
     filename = os.path.join(thedir, "{}.json".format(kind))
