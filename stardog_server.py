@@ -46,7 +46,7 @@ class Api:
 
 def api_url(path):
     baseurl = os.getenv(ASTRA_BASE_URL_ENV)
-    o = parseurl(baseurl)
+    o = urlparse(baseurl)
     o = o._replace(path=path)
     return o.geturl()
 
