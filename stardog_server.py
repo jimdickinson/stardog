@@ -116,7 +116,7 @@ class Proxy:
         cherrypy.response.status = api_resp.status_code
         
         for (header, header_value) in api_resp.headers.items():
-            if not ( header.lower() in ('content-length', 'server', 'content-encoding') ):
+            if not ( header.lower() in ('content-length', 'server', 'content-encoding', 'transfer-encoding') ):
                 cherrypy.response.headers[header] = header_value
 
         return api_resp.content
